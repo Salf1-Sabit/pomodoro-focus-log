@@ -7,9 +7,10 @@ import {
   pause,
   remainingMs,
   resume,
+  setLabel,
   start,
 } from "../../src/timer";
-import { FOCUS_MS, LONG_BREAK_MS, SHORT_BREAK_MS, type TimerState } from "../../src/types";
+import { FOCUS_MS, LONG_BREAK_MS, MAX_LABEL_LENGTH, SHORT_BREAK_MS, type TimerState } from "../../src/types";
 
 const T0 = 1_700_000_000_000;
 
@@ -198,5 +199,36 @@ describe("time accuracy", () => {
     const result = check(running, T0 + FOCUS_MS + 3 * 60 * 60 * 1000);
     expect(result.finished).toBe("focus");
     expect(result.session?.endedAt).toBe(T0 + FOCUS_MS);
+  });
+});
+
+describe("session label", () => {
+  it("setLabel stores the text, limited to 60 characters", () => {
+    expect(setLabel(initialState(), "write").label).toBe("write");
+    expect(setLabel(initialState(), "x".repeat(100)).label).toHaveLength(MAX_LABEL_LENGTH);
+  });
+
+  it("a label set before the session is carried into the completed session", () => {
+    const running = start(setLabel(initialState(), "write"), T0);
+    expect(check(running, T0 + FOCUS_MS).session).toEqual({ endedAt: T0 + FOCUS_MS, label: "write" });
+  });
+
+  it("a label changed during the session is the one that is carried", () => {
+    const running = start(setLabel(initialState(), "old"), T0);
+    const edited = setLabel(pause(running, T0 + 1000), "new");
+    const resumed = resume(edited, T0 + 2000);
+    expect(check(resumed, resumed.endsAt as number).session?.label).toBe("new");
+  });
+
+  it("the label stays for the next session after a completion", () => {
+    const done = check(start(setLabel(initialState(), "write"), T0), T0 + FOCUS_MS).state;
+    expect(done.label).toBe("write");
+  });
+
+  it("a cancelled session and a break completion carry no session data", () => {
+    const first = check(start(setLabel(initialState(), "write"), T0), T0 + FOCUS_MS).state;
+    const breakDone = check(start(first, T0 + FOCUS_MS), T0 + FOCUS_MS + SHORT_BREAK_MS);
+    expect(breakDone.session).toBeNull();
+    expect(cancel(start(setLabel(initialState(), "write"), T0)).status).toBe("idle");
   });
 });

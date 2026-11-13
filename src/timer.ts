@@ -2,6 +2,7 @@ import {
   CYCLE_LENGTH,
   FOCUS_MS,
   LONG_BREAK_MS,
+  MAX_LABEL_LENGTH,
   SHORT_BREAK_MS,
   type TimerKind,
   type TimerState,
@@ -16,7 +17,7 @@ export interface CheckResult {
   /** The kind of timer that just ended, or null if nothing ended. */
   finished: TimerKind | null;
   /** Set only when a focus session ended; this is what gets logged. */
-  session: { endedAt: number } | null;
+  session: { endedAt: number; label: string } | null;
 }
 
 export function initialState(): TimerState {
@@ -45,6 +46,11 @@ export function remainingMs(state: TimerState, now: number): number {
     return state.remainingMs;
   }
   return durationFor(state.kind);
+}
+
+/** Sets the label for the current or next focus session (limited to MAX_LABEL_LENGTH characters). */
+export function setLabel(state: TimerState, text: string): TimerState {
+  return { ...state, label: text.slice(0, MAX_LABEL_LENGTH) };
 }
 
 export function start(state: TimerState, now: number): TimerState {
@@ -82,7 +88,7 @@ export function check(state: TimerState, now: number): CheckResult {
   if (state.kind === "focus") {
     const count = state.completedFocusCount + 1;
     const next: TimerKind = count >= CYCLE_LENGTH ? "longBreak" : "shortBreak";
-    return { state: { ...idle, kind: next, completedFocusCount: count }, finished: "focus", session: { endedAt } };
+    return { state: { ...idle, kind: next, completedFocusCount: count }, finished: "focus", session: { endedAt, label: state.label } };
   }
 
   const count = state.kind === "longBreak" ? 0 : state.completedFocusCount;

@@ -83,14 +83,14 @@ Commit after each task or small logical group using Conventional Commits (`feat:
 
 ### Tests for User Story 2 (write first, confirm they fail)
 
-- [ ] T018 [US2] Write failing tests in `tests/unit/log.test.ts` for `makeEntry(completedAt, label)`: `durationMs` is 25 minutes; label is trimmed; label longer than 60 characters is cut to "60 characters" (`MAX_LABEL_LENGTH`); an empty label stays empty; ids are unique for entries with the same `completedAt`
-- [ ] T019 [US2] Write failing tests in `tests/unit/log.test.ts` for `toCsv(entries)`: header is `completed_at,duration_minutes,label`; `completed_at` is local `YYYY-MM-DDTHH:mm:ss`; labels with commas, quotes or newlines are quoted with doubled quotes; labels beginning with `=`, `+`, `-` or `@` get a leading `'`; an empty log yields the header only
-- [ ] T020 [P] [US2] Add failing tests in `tests/unit/timer.test.ts` that the `check` result for a completed focus session carries the label held in the state, and that a cancelled or break completion carries no entry data
+- [X] T018 [US2] Write failing tests in `tests/unit/log.test.ts` for `makeEntry(completedAt, label)`: `durationMs` is 25 minutes; label is trimmed; label longer than 60 characters is cut to "60 characters" (`MAX_LABEL_LENGTH`); an empty label stays empty; ids are unique for entries with the same `completedAt`
+- [X] T019 [US2] Write failing tests in `tests/unit/log.test.ts` for `toCsv(entries)`: header is `completed_at,duration_minutes,label`; `completed_at` is local `YYYY-MM-DDTHH:mm:ss`; labels with commas, quotes or newlines are quoted with doubled quotes; labels beginning with `=`, `+`, `-` or `@` get a leading `'`; an empty log yields the header only
+- [X] T020 [P] [US2] Add failing tests in `tests/unit/timer.test.ts` that the `check` result for a completed focus session carries the label held in the state, and that a cancelled or break completion carries no entry data
 
 ### Implementation for User Story 2
 
-- [ ] T021 [US2] Implement `makeEntry` and `toCsv` in `src/log.ts` (pure) until T018 and T019 pass (depends on T005)
-- [ ] T022 [US2] Update `src/timer.ts` so `check` returns the completed session's end time and label (`label` field in `TimerState`, capped at `MAX_LABEL_LENGTH`), and add `setLabel(state, text)`; make T020 pass (depends on T013)
+- [X] T021 [US2] Implement `makeEntry` and `toCsv` in `src/log.ts` (pure) until T018 and T019 pass (depends on T005)
+- [X] T022 [US2] Update `src/timer.ts` so `check` returns the completed session's end time and label (`label` field in `TimerState`, capped at `MAX_LABEL_LENGTH`), and add `setLabel(state, text)`; make T020 pass (depends on T013)
 - [ ] T023 [US2] Add a labelled text input (`<label for>` "What are you working on?", `maxlength="60"`) to the Timer region in `index.html`
 - [ ] T024 [US2] In `src/main.ts`, update the label through `setLabel` on input (before and during a session), and on a completed focus session create the entry with `makeEntry`, append to the log and call `saveLog`, then keep the label field value for the next session
 - [ ] T024a [US2] Show a short note "Limited to 60 characters" in a `role="status"` element under the label field in `index.html` and `src/main.ts` when the input reaches `MAX_LABEL_LENGTH` (60); clear it when the length drops below the limit (depends on T023, T024)
