@@ -40,10 +40,10 @@ Commit after each task or small logical group using Conventional Commits (`feat:
 
 **Purpose**: Shared types, constants and storage used by every story
 
-- [ ] T005 Define shared types and constants in `src/types.ts`: `TimerState` and `LogEntry` exactly as in data-model.md, `FOCUS_MS = 25 * 60 * 1000`, `SHORT_BREAK_MS = 5 * 60 * 1000`, `LONG_BREAK_MS = 15 * 60 * 1000`, `CYCLE_LENGTH = 4`, `MAX_LABEL_LENGTH = 60`
-- [ ] T006 [P] Write failing tests for storage in `tests/unit/storage.test.ts` using an in-memory fake `Storage`: missing key loads defaults; corrupt JSON loads defaults without throwing; invalid log entries are dropped while valid ones are kept; a throwing `setItem` is reported, not thrown
-- [ ] T007 Implement `src/storage.ts` with `loadTimer`, `saveTimer`, `loadLog`, `saveLog` using keys `pomodoro.timer.v1` and `pomodoro.log.v1` per contracts/storage.md; take a `Storage` argument so tests can pass a fake (depends on T005, T006)
-- [ ] T008 [P] Add base styles in `src/style.css`: colour tokens meeting WCAG AA (4.5:1 body text, 3:1 UI), `prefers-color-scheme` dark variant, visible `:focus-visible` outline on all controls, `prefers-reduced-motion` handling, responsive single column layout; link it from `index.html`
+- [X] T005 Define shared types and constants in `src/types.ts`: `TimerState` and `LogEntry` exactly as in data-model.md, `FOCUS_MS = 25 * 60 * 1000`, `SHORT_BREAK_MS = 5 * 60 * 1000`, `LONG_BREAK_MS = 15 * 60 * 1000`, `CYCLE_LENGTH = 4`, `MAX_LABEL_LENGTH = 60`
+- [X] T006 [P] Write failing tests for storage in `tests/unit/storage.test.ts` using an in-memory fake `Storage`: missing key loads defaults; corrupt JSON loads defaults without throwing; invalid log entries are dropped while valid ones are kept; a throwing `setItem` is reported, not thrown
+- [X] T007 Implement `src/storage.ts` with `loadTimer`, `saveTimer`, `loadLog`, `saveLog` using keys `pomodoro.timer.v1` and `pomodoro.log.v1` per contracts/storage.md; take a `Storage` argument so tests can pass a fake (depends on T005, T006)
+- [X] T008 [P] Add base styles in `src/style.css`: colour tokens meeting WCAG AA (4.5:1 body text, 3:1 UI), `prefers-color-scheme` dark variant, visible `:focus-visible` outline on all controls, `prefers-reduced-motion` handling, responsive single column layout; link it from `index.html`
 
 **Checkpoint**: Foundation ready, user stories can begin
 
