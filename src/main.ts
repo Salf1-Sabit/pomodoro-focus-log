@@ -1,6 +1,6 @@
 import { alertContent, notify, playTone, prepareAlerts, restoreTitle, setAlertTitle } from "./alerts";
 import { dailyTotalMs, entriesForDay, formatDuration, lastSevenDays, makeEntry, toCsv } from "./log";
-import { loadLog, loadTimer, saveLog, saveTimer } from "./storage";
+import { loadLog, loadTimer, saveLog, saveTimer, type StorageLike } from "./storage";
 import { cancel, check, pause, remainingMs, resume, setLabel, start } from "./timer";
 import { CYCLE_LENGTH, MAX_LABEL_LENGTH, type LogEntry, type TimerKind, type TimerState } from "./types";
 
@@ -28,8 +28,23 @@ const weekChart = element("week-chart");
 const exportButton = element<HTMLButtonElement>("export-button");
 const deleteButton = element<HTMLButtonElement>("delete-button");
 
-let timer: TimerState = loadTimer(localStorage);
-let log: LogEntry[] = loadLog(localStorage);
+/** Some browsers throw even when localStorage is only touched; then the app runs but cannot save. */
+function browserStorage(): StorageLike {
+  try {
+    return window.localStorage;
+  } catch {
+    return {
+      getItem: () => null,
+      setItem: () => {
+        throw new Error("Storage is blocked");
+      },
+    };
+  }
+}
+
+const storage = browserStorage();
+let timer: TimerState = loadTimer(storage);
+let log: LogEntry[] = loadLog(storage);
 
 function announce(message: string): void {
   statusRegion.textContent = message;
@@ -37,8 +52,8 @@ function announce(message: string): void {
 
 /** Saves the timer and log; if the browser refuses, tells the person but keeps the timer running. */
 function persist(): void {
-  const timerSaved = saveTimer(localStorage, timer);
-  const logSaved = saveLog(localStorage, log);
+  const timerSaved = saveTimer(storage, timer);
+  const logSaved = saveLog(storage, log);
   errorRegion.textContent = timerSaved && logSaved ? "" : "Could not save your data on this device.";
 }
 
