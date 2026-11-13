@@ -46,3 +46,19 @@ npm run build     # Production build must succeed
 9. **Privacy**: In the browser network panel, confirm no requests are made after the page loads.
 10. **Export and delete**: Export yields a valid CSV; Delete asks for confirmation and clears
     the log.
+
+## Verification results (2026-11-13)
+
+- `npm test`: 70 unit tests pass (timer, cycle, log totals, 7-day series including both
+  daylight-saving changes, CSV, storage, alert text). `npm run build` succeeds.
+- Scenarios 1 to 10 were run against the built app in headless Chrome driven over the DevTools
+  protocol (35 checks, all passing), with screenshots reviewed in light and dark themes at phone
+  and desktop widths.
+- Scenario 5 (background accuracy) was checked by moving the page clock forward rather than by
+  waiting in a real background tab; the timer is derived from the stored end time, which is what
+  makes it independent of tick timing.
+- Scenario 6 was checked for tone, message, title and notification with permission granted and
+  denied by observing the browser calls. Whether the tone is audible and how the operating
+  system presents the notification still need a person to confirm on a real device.
+- Contrast ratios were computed from the colour tokens; text pairs are 6.6:1 or higher and UI
+  borders are 3.9:1 or higher in both themes.

@@ -69,7 +69,7 @@ Commit after each task or small logical group using Conventional Commits (`feat:
 - [X] T015 [US1] Implement `src/main.ts` wiring: load state from `src/storage.ts` on start, call `check` immediately and then once per second, render remaining time and state text, handle button clicks through the `src/timer.ts` functions, save state after every change, hide buttons that do not apply to the current status
 - [X] T016 [US1] Add keyboard shortcuts in `src/main.ts` per contracts/ui.md (`S` start, `P` pause or resume, `C` cancel), ignored while a text field has focus, and an `aria-live="polite"` status region announcing start, pause, resume and cancel (not the per-second countdown)
 - [X] T016a [US1] Add an `aria-live="assertive"` error region to `index.html` and show "Could not save your data on this device" from `src/main.ts` when `saveTimer` or `saveLog` reports a failed write; the timer MUST keep running (depends on T015)
-- [ ] T017 [US1] Manually verify quickstart scenarios 1, 2, 4, 5 and 8 for the timer and record any deviation in the task commit message
+- [X] T017 [US1] Manually verify quickstart scenarios 1, 2, 4, 5 and 8 for the timer and record any deviation in the task commit message
 
 **Checkpoint**: A usable timer. This is the MVP.
 
@@ -95,7 +95,7 @@ Commit after each task or small logical group using Conventional Commits (`feat:
 - [X] T024 [US2] In `src/main.ts`, update the label through `setLabel` on input (before and during a session), and on a completed focus session create the entry with `makeEntry`, append to the log and call `saveLog`, then keep the label field value for the next session
 - [X] T024a [US2] Show a short note "Limited to 60 characters" in a `role="status"` element under the label field in `index.html` and `src/main.ts` when the input reaches `MAX_LABEL_LENGTH` (60); clear it when the length drops below the limit (depends on T023, T024)
 - [X] T025 [US2] Add Export CSV and Delete log buttons to `index.html`; in `src/main.ts` implement export as a download named `focus-log-YYYY-MM-DD.csv` built from `toCsv`, and delete with a confirmation prompt that clears the log; no network calls
-- [ ] T026 [US2] Manually verify quickstart scenarios 3, 9 and 10, including that labels are saved with no prompt at session end
+- [X] T026 [US2] Manually verify quickstart scenarios 3, 9 and 10, including that labels are saved with no prompt at session end
 
 **Checkpoint**: Sessions are saved, exported and deletable.
 
@@ -117,7 +117,7 @@ Commit after each task or small logical group using Conventional Commits (`feat:
 - [X] T029 [US3] Implement `entriesForDay`, `dailyTotalMs` and `formatDuration` in `src/log.ts` until T027 and T028 pass (depends on T021)
 - [X] T030 [US3] Add a "Today" `<section>` to `index.html` with a list for sessions (time and label) and a "Total focused" line, plus empty-state text
 - [X] T031 [US3] Render the Today section in `src/main.ts` and refresh it whenever a session is logged, on load, and when the local date changes while the page is open
-- [ ] T032 [US3] Manually verify quickstart scenario 7 for today's totals
+- [X] T032 [US3] Manually verify quickstart scenario 7 for today's totals
 
 **Checkpoint**: Today's progress is visible.
 
@@ -139,7 +139,7 @@ Commit after each task or small logical group using Conventional Commits (`feat:
 - [X] T035 [US4] Implement `lastSevenDays` in `src/log.ts` using `new Date(y, m, d - i)` for day starts until T033 and T034 pass (depends on T029)
 - [X] T036 [US4] Add a "Last 7 days" `<section>` to `index.html` and render it in `src/main.ts` as one element per day with a height set as a percentage of the largest total (minimum visible height for non-zero days), a day label, and the total as text under each bar
 - [X] T037 [P] [US4] Style the chart in `src/style.css` with AA-contrast colours, no reliance on colour alone (text values stay visible), and a readable layout at phone width
-- [ ] T038 [US4] Manually verify quickstart scenario 7 for the chart
+- [X] T038 [US4] Manually verify quickstart scenario 7 for the chart
 
 **Checkpoint**: The last 7 days are visible.
 
@@ -160,7 +160,7 @@ Commit after each task or small logical group using Conventional Commits (`feat:
 - [X] T040 [US5] Implement `src/alerts.ts`: `alertContent` and `shouldNotify` (pure, passing T039), plus `playTone()` using a short Web Audio oscillator beep (no audio file), `notify(text)` guarded by `shouldNotify`, and `setTitle(text)`; create the audio context lazily on the first user click; wrap every browser API call so failure never breaks the other alerts
 - [X] T041 [US5] Request notification permission on the first Start click in `src/main.ts` (only if permission is `"default"`); denial or lack of support must leave the other alerts working
 - [X] T042 [US5] On timer completion in `src/main.ts` (including a session found already finished on page load), call tone, show a visible message in the `aria-live` status region, set the window title, and send the notification; restore the original title on the next interaction
-- [ ] T043 [US5] Manually verify quickstart scenario 6 with notifications allowed, blocked, and sound muted
+- [X] T043 [US5] Manually verify quickstart scenario 6 with notifications allowed, blocked, and sound muted
 
 **Checkpoint**: All five stories work.
 
@@ -170,12 +170,12 @@ Commit after each task or small logical group using Conventional Commits (`feat:
 
 **Purpose**: Checks that span stories
 
-- [ ] T044 Run `npm test` and `npm run build`; fix any failure; confirm the timer, cycle and totals tests all pass (constitution Principle II)
-- [ ] T045 [P] Accessibility pass over `index.html` and `src/style.css`: every control keyboard reachable with a visible focus outline, every input has a label, buttons have accessible names, colour contrast meets WCAG AA in light and dark
-- [ ] T046 [P] Privacy pass: search `src/` for `fetch`, `XMLHttpRequest`, `WebSocket`, `sendBeacon` and third-party URLs and confirm none exist; confirm no network requests after load in the browser network panel
-- [ ] T047 [P] Readability pass over `src/`: descriptive names, small functions, comments only for non-obvious decisions (Principle V); remove anything not required by a user story (Principle I)
-- [ ] T048 Add a short `README.md` with run, test and build commands and the privacy statement (data stays in the browser)
-- [ ] T049 Run all ten scenarios in `specs/001-pomodoro-focus-log/quickstart.md` and note results
+- [X] T044 Run `npm test` and `npm run build`; fix any failure; confirm the timer, cycle and totals tests all pass (constitution Principle II)
+- [X] T045 [P] Accessibility pass over `index.html` and `src/style.css`: every control keyboard reachable with a visible focus outline, every input has a label, buttons have accessible names, colour contrast meets WCAG AA in light and dark
+- [X] T046 [P] Privacy pass: search `src/` for `fetch`, `XMLHttpRequest`, `WebSocket`, `sendBeacon` and third-party URLs and confirm none exist; confirm no network requests after load in the browser network panel
+- [X] T047 [P] Readability pass over `src/`: descriptive names, small functions, comments only for non-obvious decisions (Principle V); remove anything not required by a user story (Principle I)
+- [X] T048 Add a short `README.md` with run, test and build commands and the privacy statement (data stays in the browser)
+- [X] T049 Run all ten scenarios in `specs/001-pomodoro-focus-log/quickstart.md` and note results
 
 ---
 
