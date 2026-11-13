@@ -75,3 +75,21 @@ export function formatDuration(ms: number): string {
   if (minutes === 0) return `${hours} h`;
   return `${hours} h ${minutes} min`;
 }
+
+export interface DayTotal {
+  /** Local midnight at the start of the day. */
+  dayStart: number;
+  totalMs: number;
+}
+
+/** The last 7 local days, oldest first, ending with the day that contains `now`. */
+export function lastSevenDays(entries: readonly LogEntry[], now: number): DayTotal[] {
+  const today = new Date(now);
+  const days: DayTotal[] = [];
+  for (let back = 6; back >= 0; back--) {
+    // Counting calendar dates (not subtracting 24 hours) keeps daylight-saving days correct.
+    const dayStart = new Date(today.getFullYear(), today.getMonth(), today.getDate() - back).getTime();
+    days.push({ dayStart, totalMs: dailyTotalMs(entries, dayStart) });
+  }
+  return days;
+}

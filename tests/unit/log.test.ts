@@ -1,6 +1,9 @@
-import { describe, expect, it } from "vitest";
-import { dailyTotalMs, entriesForDay, formatDuration, makeEntry, toCsv } from "../../src/log";
+import { afterEach, describe, expect, it } from "vitest";
+import { dailyTotalMs, entriesForDay, formatDuration, lastSevenDays, makeEntry, toCsv } from "../../src/log";
 import { FOCUS_MS, MAX_LABEL_LENGTH, type LogEntry } from "../../src/types";
+
+// Only the time zone variable is needed; this avoids adding the Node type package.
+declare const process: { env: Record<string, string | undefined> };
 
 /** Local time, so these tests give the same result in any time zone. */
 function local(y: number, m: number, d: number, h = 0, min = 0, s = 0): number {
@@ -138,5 +141,72 @@ describe("formatDuration", () => {
 
   it("shows whole hours without minutes", () => {
     expect(formatDuration(60 * 60000)).toBe("1 h");
+  });
+});
+
+describe("lastSevenDays", () => {
+  const at = (completedAt: number): LogEntry => ({
+    id: String(completedAt),
+    completedAt,
+    durationMs: FOCUS_MS,
+    label: "",
+  });
+  const originalTz = process.env.TZ;
+
+  afterEach(() => {
+    if (originalTz === undefined) delete process.env.TZ;
+    else process.env.TZ = originalTz;
+  });
+
+  it("returns 7 days, oldest first, ending today", () => {
+    const days = lastSevenDays([], local(2026, 11, 13, 15));
+    expect(days).toHaveLength(7);
+    expect(days[6].dayStart).toBe(local(2026, 11, 13));
+    expect(days[0].dayStart).toBe(local(2026, 11, 7));
+  });
+
+  it("includes days with no sessions as zero", () => {
+    const days = lastSevenDays([at(local(2026, 11, 13, 9))], local(2026, 11, 13, 15));
+    expect(days.slice(0, 6).every((day) => day.totalMs === 0)).toBe(true);
+    expect(days[6].totalMs).toBe(FOCUS_MS);
+  });
+
+  it("totals each day from its own entries", () => {
+    const entries = [
+      at(local(2026, 11, 13, 9)),
+      at(local(2026, 11, 13, 10)),
+      at(local(2026, 11, 11, 10)),
+      at(local(2026, 11, 7, 23, 59)),
+    ];
+    const days = lastSevenDays(entries, local(2026, 11, 13, 15));
+    expect(days.map((day) => day.totalMs)).toEqual([FOCUS_MS, 0, 0, 0, FOCUS_MS, 0, 2 * FOCUS_MS]);
+  });
+
+  it("leaves out entries older than 7 days and entries after today", () => {
+    const entries = [at(local(2026, 11, 6, 23, 59)), at(local(2026, 11, 14, 0, 1))];
+    const days = lastSevenDays(entries, local(2026, 11, 13, 15));
+    expect(days.every((day) => day.totalMs === 0)).toBe(true);
+  });
+
+  it("counts a session finished just before midnight on its own day", () => {
+    const days = lastSevenDays([at(local(2026, 11, 12, 23, 59, 59))], local(2026, 11, 13, 0, 5));
+    expect(days[5].totalMs).toBe(FOCUS_MS);
+    expect(days[6].totalMs).toBe(0);
+  });
+
+  it("has no skipped or repeated day across the spring daylight-saving change", () => {
+    process.env.TZ = "America/New_York"; // clocks go forward on 2026-03-08
+    const days = lastSevenDays([at(local(2026, 3, 8, 12))], local(2026, 3, 10, 12));
+    expect(days.map((day) => new Date(day.dayStart).getDate())).toEqual([4, 5, 6, 7, 8, 9, 10]);
+    expect(days.every((day) => new Date(day.dayStart).getHours() === 0)).toBe(true);
+    expect(days[4].totalMs).toBe(FOCUS_MS);
+  });
+
+  it("has no skipped or repeated day across the autumn daylight-saving change", () => {
+    process.env.TZ = "America/New_York"; // clocks go back on 2026-11-01
+    const days = lastSevenDays([at(local(2026, 11, 1, 12))], local(2026, 11, 3, 12));
+    expect(days.map((day) => new Date(day.dayStart).getDate())).toEqual([28, 29, 30, 31, 1, 2, 3]);
+    expect(days.every((day) => new Date(day.dayStart).getHours() === 0)).toBe(true);
+    expect(days[4].totalMs).toBe(FOCUS_MS);
   });
 });

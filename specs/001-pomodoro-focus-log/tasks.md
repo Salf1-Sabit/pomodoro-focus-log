@@ -131,12 +131,12 @@ Commit after each task or small logical group using Conventional Commits (`feat:
 
 ### Tests for User Story 4 (write first, confirm they fail)
 
-- [ ] T033 [US4] Write failing tests in `tests/unit/log.test.ts` for `lastSevenDays(entries, now)`: returns 7 items oldest first, the last being today; zero days are included; totals match the entries per day; entries older than 7 days are excluded
-- [ ] T034 [US4] Add failing tests in `tests/unit/log.test.ts` that `lastSevenDays` stays correct across a daylight-saving change (days built by calendar-date arithmetic, so there are never duplicate or missing days) and for a session completed just before midnight
+- [X] T033 [US4] Write failing tests in `tests/unit/log.test.ts` for `lastSevenDays(entries, now)`: returns 7 items oldest first, the last being today; zero days are included; totals match the entries per day; entries older than 7 days are excluded
+- [X] T034 [US4] Add failing tests in `tests/unit/log.test.ts` that `lastSevenDays` stays correct across a daylight-saving change (days built by calendar-date arithmetic, so there are never duplicate or missing days) and for a session completed just before midnight
 
 ### Implementation for User Story 4
 
-- [ ] T035 [US4] Implement `lastSevenDays` in `src/log.ts` using `new Date(y, m, d - i)` for day starts until T033 and T034 pass (depends on T029)
+- [X] T035 [US4] Implement `lastSevenDays` in `src/log.ts` using `new Date(y, m, d - i)` for day starts until T033 and T034 pass (depends on T029)
 - [ ] T036 [US4] Add a "Last 7 days" `<section>` to `index.html` and render it in `src/main.ts` as one element per day with a height set as a percentage of the largest total (minimum visible height for non-zero days), a day label, and the total as text under each bar
 - [ ] T037 [P] [US4] Style the chart in `src/style.css` with AA-contrast colours, no reliance on colour alone (text values stay visible), and a readable layout at phone width
 - [ ] T038 [US4] Manually verify quickstart scenario 7 for the chart
