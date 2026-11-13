@@ -7,7 +7,25 @@
     <link rel="stylesheet" href="/src/style.css" />
   </head>
   <body>
-    <main id="app"></main>
+    <main>
+      <h1>Pomodoro Focus Log</h1>
+
+      <section id="timer-section" aria-labelledby="timer-heading">
+        <h2 id="timer-heading">Timer</h2>
+        <p id="timer-state" class="timer-state"></p>
+        <p id="timer-display" class="timer-display" role="timer"></p>
+        <p id="timer-cycle" class="muted"></p>
+        <div class="controls">
+          <button type="button" id="start-button">Start focus</button>
+          <button type="button" id="pause-button" class="secondary">Pause</button>
+          <button type="button" id="resume-button">Resume</button>
+          <button type="button" id="cancel-button" class="secondary">Cancel</button>
+        </div>
+        <p class="muted shortcuts">Shortcuts: S start, P pause or resume, C cancel.</p>
+        <p id="status" class="status" role="status" aria-live="polite"></p>
+        <p id="error" class="error" role="alert" aria-live="assertive"></p>
+      </section>
+    </main>
     <script type="module" src="/src/main.ts"></script>
   </body>
 </html>

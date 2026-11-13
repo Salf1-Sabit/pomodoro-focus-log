@@ -65,10 +65,10 @@ Commit after each task or small logical group using Conventional Commits (`feat:
 ### Implementation for User Story 1
 
 - [X] T013 [US1] Implement `src/timer.ts` as pure functions with no DOM, storage or clock access: `initialState()`, `start`, `pause`, `resume`, `cancel`, `check`, `remainingMs`, `durationFor(kind)`, following the transition table in data-model.md until T009 to T012 pass (depends on T005)
-- [ ] T014 [US1] Add the timer markup to `index.html`: a `<section aria-labelledby>` Timer region with the state text, `MM:SS` display, cycle progress ("Session 2 of 4"), and Start, Pause, Resume and Cancel `<button>` elements
-- [ ] T015 [US1] Implement `src/main.ts` wiring: load state from `src/storage.ts` on start, call `check` immediately and then once per second, render remaining time and state text, handle button clicks through the `src/timer.ts` functions, save state after every change, hide buttons that do not apply to the current status
-- [ ] T016 [US1] Add keyboard shortcuts in `src/main.ts` per contracts/ui.md (`S` start, `P` pause or resume, `C` cancel), ignored while a text field has focus, and an `aria-live="polite"` status region announcing start, pause, resume and cancel (not the per-second countdown)
-- [ ] T016a [US1] Add an `aria-live="assertive"` error region to `index.html` and show "Could not save your data on this device" from `src/main.ts` when `saveTimer` or `saveLog` reports a failed write; the timer MUST keep running (depends on T015)
+- [X] T014 [US1] Add the timer markup to `index.html`: a `<section aria-labelledby>` Timer region with the state text, `MM:SS` display, cycle progress ("Session 2 of 4"), and Start, Pause, Resume and Cancel `<button>` elements
+- [X] T015 [US1] Implement `src/main.ts` wiring: load state from `src/storage.ts` on start, call `check` immediately and then once per second, render remaining time and state text, handle button clicks through the `src/timer.ts` functions, save state after every change, hide buttons that do not apply to the current status
+- [X] T016 [US1] Add keyboard shortcuts in `src/main.ts` per contracts/ui.md (`S` start, `P` pause or resume, `C` cancel), ignored while a text field has focus, and an `aria-live="polite"` status region announcing start, pause, resume and cancel (not the per-second countdown)
+- [X] T016a [US1] Add an `aria-live="assertive"` error region to `index.html` and show "Could not save your data on this device" from `src/main.ts` when `saveTimer` or `saveLog` reports a failed write; the timer MUST keep running (depends on T015)
 - [ ] T017 [US1] Manually verify quickstart scenarios 1, 2, 4, 5 and 8 for the timer and record any deviation in the task commit message
 
 **Checkpoint**: A usable timer. This is the MVP.

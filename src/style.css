@@ -128,3 +128,44 @@ label {
     transition: none !important;
   }
 }
+
+.timer-state {
+  margin: 0;
+  font-weight: 600;
+}
+
+.timer-display {
+  margin: 0.25rem 0;
+  font-size: 4rem;
+  font-weight: 700;
+  line-height: 1.1;
+  font-variant-numeric: tabular-nums;
+}
+
+.controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 0.75rem 0;
+}
+
+.shortcuts {
+  margin: 0;
+  font-size: 0.9rem;
+}
+
+.status {
+  margin: 0.5rem 0 0;
+  font-weight: 600;
+}
+
+.error {
+  margin: 0.5rem 0 0;
+  color: var(--danger);
+  font-weight: 600;
+}
+
+.status:empty,
+.error:empty {
+  display: none;
+}
