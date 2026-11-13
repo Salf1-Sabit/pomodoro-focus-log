@@ -137,8 +137,8 @@ Commit after each task or small logical group using Conventional Commits (`feat:
 ### Implementation for User Story 4
 
 - [X] T035 [US4] Implement `lastSevenDays` in `src/log.ts` using `new Date(y, m, d - i)` for day starts until T033 and T034 pass (depends on T029)
-- [ ] T036 [US4] Add a "Last 7 days" `<section>` to `index.html` and render it in `src/main.ts` as one element per day with a height set as a percentage of the largest total (minimum visible height for non-zero days), a day label, and the total as text under each bar
-- [ ] T037 [P] [US4] Style the chart in `src/style.css` with AA-contrast colours, no reliance on colour alone (text values stay visible), and a readable layout at phone width
+- [X] T036 [US4] Add a "Last 7 days" `<section>` to `index.html` and render it in `src/main.ts` as one element per day with a height set as a percentage of the largest total (minimum visible height for non-zero days), a day label, and the total as text under each bar
+- [X] T037 [P] [US4] Style the chart in `src/style.css` with AA-contrast colours, no reliance on colour alone (text values stay visible), and a readable layout at phone width
 - [ ] T038 [US4] Manually verify quickstart scenario 7 for the chart
 
 **Checkpoint**: The last 7 days are visible.

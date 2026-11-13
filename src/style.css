@@ -189,3 +189,43 @@ label {
   margin: 0;
   padding-left: 1.25rem;
 }
+
+.week-chart {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 0.25rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.week-day {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  font-size: 0.8rem;
+}
+
+.bar-area {
+  display: flex;
+  align-items: flex-end;
+  width: 100%;
+  height: 7rem;
+  border-bottom: 2px solid var(--border);
+}
+
+.bar {
+  width: 100%;
+  background: var(--accent);
+  border-radius: 0.25rem 0.25rem 0 0;
+}
+
+.bar-total {
+  margin-top: 0.25rem;
+  font-weight: 600;
+}
+
+.bar-day {
+  color: var(--muted);
+}

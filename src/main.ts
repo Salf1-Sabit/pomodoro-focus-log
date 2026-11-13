@@ -1,4 +1,4 @@
-import { dailyTotalMs, entriesForDay, formatDuration, makeEntry, toCsv } from "./log";
+import { dailyTotalMs, entriesForDay, formatDuration, lastSevenDays, makeEntry, toCsv } from "./log";
 import { loadLog, loadTimer, saveLog, saveTimer } from "./storage";
 import { cancel, check, pause, remainingMs, resume, setLabel, start } from "./timer";
 import { CYCLE_LENGTH, MAX_LABEL_LENGTH, type LogEntry, type TimerKind, type TimerState } from "./types";
@@ -23,6 +23,7 @@ const labelNote = element("label-note");
 const todayTotal = element("today-total");
 const todayList = element("today-list");
 const todayEmpty = element("today-empty");
+const weekChart = element("week-chart");
 const exportButton = element<HTMLButtonElement>("export-button");
 const deleteButton = element<HTMLButtonElement>("delete-button");
 
@@ -104,11 +105,46 @@ function renderToday(now: number): void {
   todayEmpty.hidden = entries.length > 0;
 }
 
+/** One bar per day. Heights are relative to the busiest day; the total is also written as text. */
+function renderWeek(now: number): void {
+  const days = lastSevenDays(log, now);
+  const busiest = Math.max(...days.map((day) => day.totalMs));
+  weekChart.replaceChildren(
+    ...days.map((day, index) => {
+      const item = document.createElement("li");
+      item.className = "week-day";
+
+      const area = document.createElement("div");
+      area.className = "bar-area";
+      const bar = document.createElement("div");
+      bar.className = "bar";
+      bar.setAttribute("aria-hidden", "true");
+      // A non-zero day always gets a visible sliver, even next to a much busier day.
+      const percent = busiest === 0 ? 0 : Math.max((day.totalMs / busiest) * 100, day.totalMs > 0 ? 4 : 0);
+      bar.style.height = `${percent}%`;
+      area.append(bar);
+
+      const total = document.createElement("span");
+      total.className = "bar-total";
+      total.textContent = formatDuration(day.totalMs);
+
+      const name = document.createElement("span");
+      name.className = "bar-day";
+      name.textContent =
+        index === days.length - 1 ? "Today" : new Date(day.dayStart).toLocaleDateString([], { weekday: "short" });
+
+      item.append(area, total, name);
+      return item;
+    }),
+  );
+}
+
 function renderLog(): void {
   const signature = logSignature();
   if (signature === renderedSignature) return;
   renderedSignature = signature;
   renderToday(Date.now());
+  renderWeek(Date.now());
 }
 
 /** Runs on every tick and on page load: completes the timer if its end time has passed. */
