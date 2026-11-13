@@ -15,6 +15,11 @@
         <p id="timer-state" class="timer-state"></p>
         <p id="timer-display" class="timer-display" role="timer"></p>
         <p id="timer-cycle" class="muted"></p>
+        <div class="label-field">
+          <label for="label-input">What are you working on? (optional)</label>
+          <input type="text" id="label-input" maxlength="60" autocomplete="off" aria-describedby="label-note" />
+          <p id="label-note" class="muted note" role="status"></p>
+        </div>
         <div class="controls">
           <button type="button" id="start-button">Start focus</button>
           <button type="button" id="pause-button" class="secondary">Pause</button>
@@ -24,6 +29,15 @@
         <p class="muted shortcuts">Shortcuts: S start, P pause or resume, C cancel.</p>
         <p id="status" class="status" role="status" aria-live="polite"></p>
         <p id="error" class="error" role="alert" aria-live="assertive"></p>
+      </section>
+
+      <section id="data-section" aria-labelledby="data-heading">
+        <h2 id="data-heading">Your data</h2>
+        <p class="muted">Everything is stored only in this browser. Nothing is sent anywhere.</p>
+        <div class="controls">
+          <button type="button" id="export-button" class="secondary">Export CSV</button>
+          <button type="button" id="delete-button" class="danger">Delete log</button>
+        </div>
       </section>
     </main>
     <script type="module" src="/src/main.ts"></script>

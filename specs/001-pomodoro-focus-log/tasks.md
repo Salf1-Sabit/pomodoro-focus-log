@@ -91,10 +91,10 @@ Commit after each task or small logical group using Conventional Commits (`feat:
 
 - [X] T021 [US2] Implement `makeEntry` and `toCsv` in `src/log.ts` (pure) until T018 and T019 pass (depends on T005)
 - [X] T022 [US2] Update `src/timer.ts` so `check` returns the completed session's end time and label (`label` field in `TimerState`, capped at `MAX_LABEL_LENGTH`), and add `setLabel(state, text)`; make T020 pass (depends on T013)
-- [ ] T023 [US2] Add a labelled text input (`<label for>` "What are you working on?", `maxlength="60"`) to the Timer region in `index.html`
-- [ ] T024 [US2] In `src/main.ts`, update the label through `setLabel` on input (before and during a session), and on a completed focus session create the entry with `makeEntry`, append to the log and call `saveLog`, then keep the label field value for the next session
-- [ ] T024a [US2] Show a short note "Limited to 60 characters" in a `role="status"` element under the label field in `index.html` and `src/main.ts` when the input reaches `MAX_LABEL_LENGTH` (60); clear it when the length drops below the limit (depends on T023, T024)
-- [ ] T025 [US2] Add Export CSV and Delete log buttons to `index.html`; in `src/main.ts` implement export as a download named `focus-log-YYYY-MM-DD.csv` built from `toCsv`, and delete with a confirmation prompt that clears the log; no network calls
+- [X] T023 [US2] Add a labelled text input (`<label for>` "What are you working on?", `maxlength="60"`) to the Timer region in `index.html`
+- [X] T024 [US2] In `src/main.ts`, update the label through `setLabel` on input (before and during a session), and on a completed focus session create the entry with `makeEntry`, append to the log and call `saveLog`, then keep the label field value for the next session
+- [X] T024a [US2] Show a short note "Limited to 60 characters" in a `role="status"` element under the label field in `index.html` and `src/main.ts` when the input reaches `MAX_LABEL_LENGTH` (60); clear it when the length drops below the limit (depends on T023, T024)
+- [X] T025 [US2] Add Export CSV and Delete log buttons to `index.html`; in `src/main.ts` implement export as a download named `focus-log-YYYY-MM-DD.csv` built from `toCsv`, and delete with a confirmation prompt that clears the log; no network calls
 - [ ] T026 [US2] Manually verify quickstart scenarios 3, 9 and 10, including that labels are saved with no prompt at session end
 
 **Checkpoint**: Sessions are saved, exported and deletable.

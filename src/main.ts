@@ -1,6 +1,7 @@
-import { loadTimer, saveTimer } from "./storage";
-import { cancel, check, pause, remainingMs, resume, start } from "./timer";
-import { CYCLE_LENGTH, type TimerKind, type TimerState } from "./types";
+import { makeEntry, toCsv } from "./log";
+import { loadLog, loadTimer, saveLog, saveTimer } from "./storage";
+import { cancel, check, pause, remainingMs, resume, setLabel, start } from "./timer";
+import { CYCLE_LENGTH, MAX_LABEL_LENGTH, type LogEntry, type TimerKind, type TimerState } from "./types";
 
 function element<T extends HTMLElement>(id: string): T {
   const found = document.getElementById(id);
@@ -17,17 +18,27 @@ const resumeButton = element<HTMLButtonElement>("resume-button");
 const cancelButton = element<HTMLButtonElement>("cancel-button");
 const statusRegion = element("status");
 const errorRegion = element("error");
+const labelInput = element<HTMLInputElement>("label-input");
+const labelNote = element("label-note");
+const exportButton = element<HTMLButtonElement>("export-button");
+const deleteButton = element<HTMLButtonElement>("delete-button");
 
 let timer: TimerState = loadTimer(localStorage);
+let log: LogEntry[] = loadLog(localStorage);
 
 function announce(message: string): void {
   statusRegion.textContent = message;
 }
 
-/** Saves the timer; if the browser refuses, tells the person but keeps the timer running. */
+/** Saves the timer and log; if the browser refuses, tells the person but keeps the timer running. */
 function persist(): void {
-  const ok = saveTimer(localStorage, timer);
-  errorRegion.textContent = ok ? "" : "Could not save your data on this device.";
+  const timerSaved = saveTimer(localStorage, timer);
+  const logSaved = saveLog(localStorage, log);
+  errorRegion.textContent = timerSaved && logSaved ? "" : "Could not save your data on this device.";
+}
+
+function updateLabelNote(): void {
+  labelNote.textContent = labelInput.value.length >= MAX_LABEL_LENGTH ? `Limited to ${MAX_LABEL_LENGTH} characters` : "";
 }
 
 function formatClock(ms: number): string {
@@ -74,6 +85,9 @@ function tick(): void {
   const result = check(timer, Date.now());
   if (result.finished !== null) {
     timer = result.state;
+    if (result.session) {
+      log = [...log, makeEntry(result.session.endedAt, result.session.label, log)];
+    }
     persist();
     announce(result.finished === "focus" ? "Focus session complete." : "Break over.");
   }
@@ -108,6 +122,39 @@ function onCancel(): void {
   render();
 }
 
+function onLabelInput(): void {
+  timer = setLabel(timer, labelInput.value);
+  updateLabelNote();
+  persist();
+}
+
+function onExport(): void {
+  const blob = new Blob([toCsv(log)], { type: "text/csv;charset=utf-8" });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+  const today = new Date();
+  const pad = (n: number): string => String(n).padStart(2, "0");
+  link.href = url;
+  link.download = `focus-log-${today.getFullYear()}-${pad(today.getMonth() + 1)}-${pad(today.getDate())}.csv`;
+  link.click();
+  URL.revokeObjectURL(url);
+  announce("Log exported.");
+}
+
+function onDelete(): void {
+  if (log.length === 0) {
+    announce("The log is already empty.");
+    return;
+  }
+  if (!window.confirm("Delete all logged sessions? This cannot be undone.")) return;
+  log = [];
+  persist();
+  announce("Log deleted.");
+}
+
+labelInput.addEventListener("input", onLabelInput);
+exportButton.addEventListener("click", onExport);
+deleteButton.addEventListener("click", onDelete);
 startButton.addEventListener("click", onStart);
 pauseButton.addEventListener("click", onPause);
 resumeButton.addEventListener("click", onResume);
@@ -129,5 +176,7 @@ document.addEventListener("visibilitychange", () => {
   if (!document.hidden) tick();
 });
 
+labelInput.value = timer.label;
+updateLabelNote();
 tick();
 setInterval(tick, 1000);
