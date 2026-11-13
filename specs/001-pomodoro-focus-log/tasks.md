@@ -153,13 +153,13 @@ Commit after each task or small logical group using Conventional Commits (`feat:
 
 ### Tests for User Story 5 (write first, confirm they fail)
 
-- [ ] T039 [P] [US5] Write failing tests in `tests/unit/alerts.test.ts` for a pure `alertContent(kindEnded)` returning the message and title text for "focus ended" and "break ended", and for `shouldNotify(permission, supported)` returning true only when supported and `"granted"`
+- [X] T039 [P] [US5] Write failing tests in `tests/unit/alerts.test.ts` for a pure `alertContent(kindEnded)` returning the message and title text for "focus ended" and "break ended", and for `shouldNotify(permission, supported)` returning true only when supported and `"granted"`
 
 ### Implementation for User Story 5
 
-- [ ] T040 [US5] Implement `src/alerts.ts`: `alertContent` and `shouldNotify` (pure, passing T039), plus `playTone()` using a short Web Audio oscillator beep (no audio file), `notify(text)` guarded by `shouldNotify`, and `setTitle(text)`; create the audio context lazily on the first user click; wrap every browser API call so failure never breaks the other alerts
-- [ ] T041 [US5] Request notification permission on the first Start click in `src/main.ts` (only if permission is `"default"`); denial or lack of support must leave the other alerts working
-- [ ] T042 [US5] On timer completion in `src/main.ts` (including a session found already finished on page load), call tone, show a visible message in the `aria-live` status region, set the window title, and send the notification; restore the original title on the next interaction
+- [X] T040 [US5] Implement `src/alerts.ts`: `alertContent` and `shouldNotify` (pure, passing T039), plus `playTone()` using a short Web Audio oscillator beep (no audio file), `notify(text)` guarded by `shouldNotify`, and `setTitle(text)`; create the audio context lazily on the first user click; wrap every browser API call so failure never breaks the other alerts
+- [X] T041 [US5] Request notification permission on the first Start click in `src/main.ts` (only if permission is `"default"`); denial or lack of support must leave the other alerts working
+- [X] T042 [US5] On timer completion in `src/main.ts` (including a session found already finished on page load), call tone, show a visible message in the `aria-live` status region, set the window title, and send the notification; restore the original title on the next interaction
 - [ ] T043 [US5] Manually verify quickstart scenario 6 with notifications allowed, blocked, and sound muted
 
 **Checkpoint**: All five stories work.

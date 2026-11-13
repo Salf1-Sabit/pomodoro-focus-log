@@ -1,3 +1,4 @@
+import { alertContent, notify, playTone, prepareAlerts, restoreTitle, setAlertTitle } from "./alerts";
 import { dailyTotalMs, entriesForDay, formatDuration, lastSevenDays, makeEntry, toCsv } from "./log";
 import { loadLog, loadTimer, saveLog, saveTimer } from "./storage";
 import { cancel, check, pause, remainingMs, resume, setLabel, start } from "./timer";
@@ -156,13 +157,18 @@ function tick(): void {
       log = [...log, makeEntry(result.session.endedAt, result.session.label, log)];
     }
     persist();
-    announce(result.finished === "focus" ? "Focus session complete." : "Break over.");
+    const content = alertContent(result.finished);
+    playTone();
+    announce(content.message);
+    setAlertTitle(content.title);
+    notify(content.message);
   }
   render();
   renderLog();
 }
 
 function onStart(): void {
+  prepareAlerts();
   timer = start(timer, Date.now());
   persist();
   announce(`${KIND_NAMES[timer.kind]} started.`);
@@ -239,6 +245,11 @@ document.addEventListener("keydown", (event) => {
   else if (key === "p" && timer.status === "paused") onResume();
   else if (key === "c" && timer.status !== "idle") onCancel();
 });
+
+// Any interaction means the person has seen the alert, so the normal title returns.
+for (const type of ["pointerdown", "keydown", "focus"]) {
+  window.addEventListener(type, restoreTitle);
+}
 
 // Catch up at once when the tab becomes visible again after being in the background.
 document.addEventListener("visibilitychange", () => {
