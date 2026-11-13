@@ -115,8 +115,8 @@ Commit after each task or small logical group using Conventional Commits (`feat:
 ### Implementation for User Story 3
 
 - [X] T029 [US3] Implement `entriesForDay`, `dailyTotalMs` and `formatDuration` in `src/log.ts` until T027 and T028 pass (depends on T021)
-- [ ] T030 [US3] Add a "Today" `<section>` to `index.html` with a list for sessions (time and label) and a "Total focused" line, plus empty-state text
-- [ ] T031 [US3] Render the Today section in `src/main.ts` and refresh it whenever a session is logged, on load, and when the local date changes while the page is open
+- [X] T030 [US3] Add a "Today" `<section>` to `index.html` with a list for sessions (time and label) and a "Total focused" line, plus empty-state text
+- [X] T031 [US3] Render the Today section in `src/main.ts` and refresh it whenever a session is logged, on load, and when the local date changes while the page is open
 - [ ] T032 [US3] Manually verify quickstart scenario 7 for today's totals
 
 **Checkpoint**: Today's progress is visible.

@@ -1,4 +1,4 @@
-import { makeEntry, toCsv } from "./log";
+import { dailyTotalMs, entriesForDay, formatDuration, makeEntry, toCsv } from "./log";
 import { loadLog, loadTimer, saveLog, saveTimer } from "./storage";
 import { cancel, check, pause, remainingMs, resume, setLabel, start } from "./timer";
 import { CYCLE_LENGTH, MAX_LABEL_LENGTH, type LogEntry, type TimerKind, type TimerState } from "./types";
@@ -20,6 +20,9 @@ const statusRegion = element("status");
 const errorRegion = element("error");
 const labelInput = element<HTMLInputElement>("label-input");
 const labelNote = element("label-note");
+const todayTotal = element("today-total");
+const todayList = element("today-list");
+const todayEmpty = element("today-empty");
 const exportButton = element<HTMLButtonElement>("export-button");
 const deleteButton = element<HTMLButtonElement>("delete-button");
 
@@ -80,6 +83,34 @@ function render(): void {
   cancelButton.hidden = timer.status === "idle";
 }
 
+/** Changes whenever the log or the calendar day changes, so the lists are rebuilt only when needed. */
+function logSignature(): string {
+  return `${new Date().toDateString()}|${log.length}`;
+}
+
+let renderedSignature = "";
+
+function renderToday(now: number): void {
+  const entries = entriesForDay(log, now);
+  todayTotal.textContent = `Total focused: ${formatDuration(dailyTotalMs(log, now))}`;
+  todayList.replaceChildren(
+    ...entries.map((entry) => {
+      const item = document.createElement("li");
+      const time = new Date(entry.completedAt).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+      item.textContent = entry.label === "" ? `${time}, no label` : `${time}, ${entry.label}`;
+      return item;
+    }),
+  );
+  todayEmpty.hidden = entries.length > 0;
+}
+
+function renderLog(): void {
+  const signature = logSignature();
+  if (signature === renderedSignature) return;
+  renderedSignature = signature;
+  renderToday(Date.now());
+}
+
 /** Runs on every tick and on page load: completes the timer if its end time has passed. */
 function tick(): void {
   const result = check(timer, Date.now());
@@ -92,6 +123,7 @@ function tick(): void {
     announce(result.finished === "focus" ? "Focus session complete." : "Break over.");
   }
   render();
+  renderLog();
 }
 
 function onStart(): void {
@@ -150,6 +182,7 @@ function onDelete(): void {
   log = [];
   persist();
   announce("Log deleted.");
+  renderLog();
 }
 
 labelInput.addEventListener("input", onLabelInput);
