@@ -29,10 +29,10 @@ Commit after each task or small logical group using Conventional Commits (`feat:
 
 **Purpose**: Project initialization
 
-- [ ] T001 Create `package.json` with scripts `dev` (vite), `build` (tsc --noEmit && vite build), `test` (vitest run); dev dependencies only: `typescript`, `vite`, `vitest`; no runtime dependencies
-- [ ] T002 [P] Create `tsconfig.json` with `strict: true`, `target: ES2022`, `module: ESNext`, `moduleResolution: Bundler`, `lib: [ES2022, DOM]`, including `src` and `tests`
-- [ ] T003 [P] Create `vite.config.ts` (with Vitest `test` config using the default `node` environment, `include: ["tests/**/*.test.ts"]`) and `.gitignore` (node_modules, dist)
-- [ ] T004 Create the empty directory layout: `src/`, `tests/unit/`, and an `index.html` shell with `<main>`, title "Pomodoro Focus Log", `lang="en"`, viewport meta, and a module script pointing at `src/main.ts`
+- [X] T001 Create `package.json` with scripts `dev` (vite), `build` (tsc --noEmit && vite build), `test` (vitest run); dev dependencies only: `typescript`, `vite`, `vitest`; no runtime dependencies
+- [X] T002 [P] Create `tsconfig.json` with `strict: true`, `target: ES2022`, `module: ESNext`, `moduleResolution: Bundler`, `lib: [ES2022, DOM]`, including `src` and `tests`
+- [X] T003 [P] Create `vite.config.ts` (with Vitest `test` config using the default `node` environment, `include: ["tests/**/*.test.ts"]`) and `.gitignore` (node_modules, dist)
+- [X] T004 Create the empty directory layout: `src/`, `tests/unit/`, and an `index.html` shell with `<main>`, title "Pomodoro Focus Log", `lang="en"`, viewport meta, and a module script pointing at `src/main.ts`
 
 ---
 
