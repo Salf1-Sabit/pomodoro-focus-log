@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { makeEntry, toCsv } from "../../src/log";
+import { dailyTotalMs, entriesForDay, formatDuration, makeEntry, toCsv } from "../../src/log";
 import { FOCUS_MS, MAX_LABEL_LENGTH, type LogEntry } from "../../src/types";
 
 /** Local time, so these tests give the same result in any time zone. */
@@ -81,5 +81,62 @@ describe("toCsv", () => {
       const csv = toCsv([entry(local(2026, 1, 1), bad)]);
       expect(csv).toContain(`,25,'${bad}\n`);
     }
+  });
+});
+
+describe("entriesForDay and dailyTotalMs", () => {
+  const at = (completedAt: number, label = ""): LogEntry => ({
+    id: String(completedAt),
+    completedAt,
+    durationMs: FOCUS_MS,
+    label,
+  });
+
+  it("lists only the entries completed on that local day", () => {
+    const today = at(local(2026, 11, 13, 9), "today");
+    const yesterday = at(local(2026, 11, 12, 9), "yesterday");
+    const tomorrow = at(local(2026, 11, 14, 9), "tomorrow");
+    const result = entriesForDay([yesterday, today, tomorrow], local(2026, 11, 13, 15));
+    expect(result).toEqual([today]);
+  });
+
+  it("puts 23:59 and 00:01 on different days", () => {
+    const late = at(local(2026, 11, 13, 23, 59));
+    const early = at(local(2026, 11, 14, 0, 1));
+    expect(entriesForDay([late, early], local(2026, 11, 13))).toEqual([late]);
+    expect(entriesForDay([late, early], local(2026, 11, 14))).toEqual([early]);
+  });
+
+  it("counts a session on the day it finished, not the day it started", () => {
+    // Finished just after midnight, so it belongs to the new day.
+    const finished = at(local(2026, 11, 14, 0, 10));
+    expect(dailyTotalMs([finished], local(2026, 11, 14, 12))).toBe(FOCUS_MS);
+    expect(dailyTotalMs([finished], local(2026, 11, 13, 12))).toBe(0);
+  });
+
+  it("sums the durations of that day's entries", () => {
+    const entries = [at(local(2026, 11, 13, 9)), at(local(2026, 11, 13, 10)), at(local(2026, 11, 12, 10))];
+    expect(dailyTotalMs(entries, local(2026, 11, 13))).toBe(2 * FOCUS_MS);
+  });
+
+  it("returns zero and an empty list when there are no entries that day", () => {
+    expect(dailyTotalMs([], local(2026, 11, 13))).toBe(0);
+    expect(entriesForDay([], local(2026, 11, 13))).toEqual([]);
+  });
+});
+
+describe("formatDuration", () => {
+  it("shows minutes only under an hour", () => {
+    expect(formatDuration(25 * 60000)).toBe("25 min");
+    expect(formatDuration(0)).toBe("0 min");
+  });
+
+  it("shows hours and minutes", () => {
+    expect(formatDuration(75 * 60000)).toBe("1 h 15 min");
+    expect(formatDuration(150 * 60000)).toBe("2 h 30 min");
+  });
+
+  it("shows whole hours without minutes", () => {
+    expect(formatDuration(60 * 60000)).toBe("1 h");
   });
 });

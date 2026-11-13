@@ -109,12 +109,12 @@ Commit after each task or small logical group using Conventional Commits (`feat:
 
 ### Tests for User Story 3 (write first, confirm they fail)
 
-- [ ] T027 [US3] Write failing tests in `tests/unit/log.test.ts` for `entriesForDay(entries, day)` and `dailyTotalMs(entries, day)`: only entries in that local calendar day count; an entry at 23:59 and one at 00:01 fall on different days; no entries gives zero
-- [ ] T028 [US3] Add a failing test in `tests/unit/log.test.ts` for `formatDuration(ms)` giving text like `1 h 15 min`, `25 min` and `0 min`
+- [X] T027 [US3] Write failing tests in `tests/unit/log.test.ts` for `entriesForDay(entries, day)` and `dailyTotalMs(entries, day)`: only entries in that local calendar day count; an entry at 23:59 and one at 00:01 fall on different days; no entries gives zero
+- [X] T028 [US3] Add a failing test in `tests/unit/log.test.ts` for `formatDuration(ms)` giving text like `1 h 15 min`, `25 min` and `0 min`
 
 ### Implementation for User Story 3
 
-- [ ] T029 [US3] Implement `entriesForDay`, `dailyTotalMs` and `formatDuration` in `src/log.ts` until T027 and T028 pass (depends on T021)
+- [X] T029 [US3] Implement `entriesForDay`, `dailyTotalMs` and `formatDuration` in `src/log.ts` until T027 and T028 pass (depends on T021)
 - [ ] T030 [US3] Add a "Today" `<section>` to `index.html` with a list for sessions (time and label) and a "Total focused" line, plus empty-state text
 - [ ] T031 [US3] Render the Today section in `src/main.ts` and refresh it whenever a session is logged, on load, and when the local date changes while the page is open
 - [ ] T032 [US3] Manually verify quickstart scenario 7 for today's totals

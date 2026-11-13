@@ -45,3 +45,33 @@ export function toCsv(entries: readonly LogEntry[]): string {
   });
   return ["completed_at,duration_minutes,label", ...rows].join("\n") + "\n";
 }
+
+/** Local midnight at the start of the day that contains `epochMs`. */
+function startOfDay(epochMs: number): number {
+  const d = new Date(epochMs);
+  return new Date(d.getFullYear(), d.getMonth(), d.getDate()).getTime();
+}
+
+/** Entries completed on the local calendar day that contains `day`, in the order given. */
+export function entriesForDay(entries: readonly LogEntry[], day: number): LogEntry[] {
+  const start = startOfDay(day);
+  const next = new Date(start);
+  next.setDate(next.getDate() + 1);
+  const end = next.getTime();
+  return entries.filter((entry) => entry.completedAt >= start && entry.completedAt < end);
+}
+
+/** Total focused milliseconds on the local calendar day that contains `day`. */
+export function dailyTotalMs(entries: readonly LogEntry[], day: number): number {
+  return entriesForDay(entries, day).reduce((sum, entry) => sum + entry.durationMs, 0);
+}
+
+/** For example "25 min", "1 h 15 min", "2 h". */
+export function formatDuration(ms: number): string {
+  const totalMinutes = Math.round(ms / 60000);
+  const hours = Math.floor(totalMinutes / 60);
+  const minutes = totalMinutes % 60;
+  if (hours === 0) return `${minutes} min`;
+  if (minutes === 0) return `${hours} h`;
+  return `${hours} h ${minutes} min`;
+}
