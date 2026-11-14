@@ -63,9 +63,9 @@ description: "Task list for the consistent color palette feature"
 
 **Independent Test**: Tab through all controls on all screens (quickstart step 3)
 
-- [ ] T011 [US4] In `src/style.css`, review the `:focus-visible` rule and set `outline` to `3px solid var(--focus)` with `outline-offset: 2px`, so the ring sits on the surrounding surface and not on the button's own fill. Keep it unchanged if it already does.
-- [ ] T012 [US4] Add the focus ring contrast pairs to `tests/unit/palette.test.ts`: `--focus` against `--bg`, `--surface` and `--accent`, each at least 3:1, in both blocks
-- [ ] T013 [US4] Add `@media (forced-colors: active)` handling in `src/style.css` only if the outline or state border would disappear (use system color keywords such as `CanvasText` and `Highlight`, not literals; keep the T006 test passing)
+- [X] T011 [US4] In `src/style.css`, review the `:focus-visible` rule and set `outline` to `3px solid var(--focus)` with `outline-offset: 2px`, so the ring sits on the surrounding surface and not on the button's own fill. Keep it unchanged if it already does.
+- [X] T012 [US4] Add the focus ring contrast pairs to `tests/unit/palette.test.ts`: `--focus` against `--bg`, `--surface` and `--accent`, each at least 3:1, in both blocks
+- [X] T013 [US4] Add `@media (forced-colors: active)` handling in `src/style.css` only if the outline or state border would disappear (use system color keywords such as `CanvasText` and `Highlight`, not literals; keep the T006 test passing). *Skipped: browsers keep outlines and borders in forced-colors mode, so nothing disappears. No hover or disabled styles exist to review.*
 
 **Checkpoint**: US1 and US4 (both P1) are complete
 
@@ -77,11 +77,11 @@ description: "Task list for the consistent color palette feature"
 
 **Independent Test**: Complete a session, then cancel one (quickstart step 4)
 
-- [ ] T014 [P] [US2] In `src/main.ts`, `renderToday()`: add a class `log-entry` to each created `<li>`. The visible text stays as it is.
-- [ ] T015 [P] [US2] In `src/style.css`, style `.log-entry` with `--completed` as a left border or marker, and add a "✓" `::before` marker (decorative). Text stays in `--text`.
-- [ ] T016 [US2] In `src/main.ts`, `onCancel()` (near line 208): set `statusRegion.dataset.outcome = "cancelled"` after `announce("Cancelled.")`, and clear it in `announce()` for every other message. The announce text does not change.
-- [ ] T017 [US2] In `src/style.css`, style `.status[data-outcome="cancelled"]` with `--cancelled` text, and give `#cancel-button` the `--cancelled` border and text color (outlined control). The word "Cancelled." is the non-color cue. Keep `--danger` for "Delete log" and the error text unless it can share `--cancelled` per `data-model.md`.
-- [ ] T018 [US2] Add the `--completed` and `--cancelled` text pairs on `--surface` (4.5:1) and their marker pairs (3:1) to `tests/unit/palette.test.ts`
+- [X] T014 [P] [US2] In `src/main.ts`, `renderToday()`: add a class `log-entry` to each created `<li>`. The visible text stays as it is.
+- [X] T015 [P] [US2] In `src/style.css`, style `.log-entry` with `--completed` as a left border or marker, and add a "✓" `::before` marker (decorative). Text stays in `--text`.
+- [X] T016 [US2] In `src/main.ts`, `onCancel()` (near line 208): set `statusRegion.dataset.outcome = "cancelled"` after `announce("Cancelled.")`, and clear it in `announce()` for every other message. The announce text does not change.
+- [X] T017 [US2] In `src/style.css`, style `.status[data-outcome="cancelled"]` with `--cancelled` text, and give `#cancel-button` the `--cancelled` border and text color (outlined control). The word "Cancelled." is the non-color cue. Keep `--danger` for "Delete log" and the error text unless it can share `--cancelled` per `data-model.md`.
+- [X] T018 [US2] Add the `--completed` and `--cancelled` text pairs on `--surface` (4.5:1) and their marker pairs (3:1) to `tests/unit/palette.test.ts`
 
 **Checkpoint**: US2 works; the existing log tests still pass
 
@@ -93,8 +93,8 @@ description: "Task list for the consistent color palette feature"
 
 **Independent Test**: View the summary next to the timer and log (quickstart step 5)
 
-- [ ] T019 [US3] In `src/style.css`, point `.bar` at `--completed` (the bars sum completed focus sessions) and keep `.bar-total` in `--text` and `.bar-day` in `--muted`. Keep `.bar-area`'s border on `--border`.
-- [ ] T020 [US3] Add the bar fill versus `--surface` pair (3:1) and `.bar-day` muted-on-surface pair (4.5:1) to `tests/unit/palette.test.ts`
+- [X] T019 [US3] In `src/style.css`, point `.bar` at `--completed` (the bars sum completed focus sessions) and keep `.bar-total` in `--text` and `.bar-day` in `--muted`. Keep `.bar-area`'s border on `--border`.
+- [X] T020 [US3] Add the bar fill versus `--surface` pair (3:1) and `.bar-day` muted-on-surface pair (4.5:1) to `tests/unit/palette.test.ts`
 
 **Checkpoint**: All four stories complete
 
@@ -102,9 +102,9 @@ description: "Task list for the consistent color palette feature"
 
 ## Phase 7: Polish & cross-cutting
 
-- [ ] T021 [P] Go through `contracts/palette.md` and confirm every rule is met. Fix `src/style.css` for any gap (hover, active and disabled states included, per the spec's edge cases)
-- [ ] T022 [P] Add a short "Colors" section to `README.md`: where the palette lives, how to change it, and that `npm test` checks contrast
-- [ ] T023 Run `npm test` and `npm run build`; confirm every existing test still passes unchanged (FR-009, SC-005)
+- [X] T021 [P] Go through `contracts/palette.md` and confirm every rule is met. Fix `src/style.css` for any gap (hover, active and disabled states included, per the spec's edge cases)
+- [X] T022 [P] Add a short "Colors" section to `README.md`: where the palette lives, how to change it, and that `npm test` checks contrast
+- [X] T023 Run `npm test` and `npm run build`; confirm every existing test still passes unchanged (FR-009, SC-005)
 - [ ] T024 Walk through `quickstart.md` manually in the browser, including grayscale and keyboard checks, and note the result in `specs/002-color-palette-design/quickstart.md`
 
 ---

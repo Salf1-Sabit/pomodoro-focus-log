@@ -25,6 +25,15 @@ npm test         # unit tests (timer logic, log totals, storage, alerts)
 npm run build    # type-check and build to dist/
 ```
 
+## Colors
+
+All colors live in one palette block at the top of `src/style.css` (light values, plus dark
+values for people whose system uses a dark scheme). Every other rule uses `var(--token)`. Focus,
+break, completed and cancelled each have their own color and also a non-color cue: a border
+style or marker on the timer, a check mark on completed sessions, and the word "Cancelled."
+`npm test` checks the contrast of the main pairs (4.5:1 for text, 3:1 for borders, focus ring
+and markers) and fails if a color is written anywhere outside the palette.
+
 ## Project layout
 
 - `src/timer.ts`: pure timer logic; takes the current time as an argument, no DOM

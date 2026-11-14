@@ -101,6 +101,11 @@ button.secondary {
   border-color: var(--border);
 }
 
+#cancel-button {
+  color: var(--cancelled);
+  border-color: var(--cancelled);
+}
+
 button.danger {
   background: transparent;
   color: var(--danger);
@@ -210,6 +215,10 @@ label {
   font-weight: 600;
 }
 
+.status[data-outcome="cancelled"] {
+  color: var(--cancelled);
+}
+
 .status:empty,
 .error:empty {
   display: none;
@@ -233,6 +242,18 @@ label {
 .session-list {
   margin: 0;
   padding-left: 1.25rem;
+}
+
+/* Completed sessions: green edge plus a check mark, so the outcome is not colour alone. */
+.log-entry {
+  border-left: 0.25rem solid var(--completed);
+  padding-left: 0.5rem;
+}
+
+.log-entry::before {
+  content: "\2713  ";
+  color: var(--completed);
+  font-weight: 700;
 }
 
 .week-chart {
@@ -262,7 +283,7 @@ label {
 
 .bar {
   width: 100%;
-  background: var(--accent);
+  background: var(--completed);
   border-radius: 0.25rem 0.25rem 0 0;
 }
 

@@ -49,6 +49,8 @@ let log: LogEntry[] = loadLog(storage);
 
 function announce(message: string): void {
   statusRegion.textContent = message;
+  // Styling hook only: lets CSS colour a cancel message; every other message is plain.
+  delete statusRegion.dataset.outcome;
 }
 
 /** Saves the timer and log; if the browser refuses, tells the person but keeps the timer running. */
@@ -116,6 +118,7 @@ function renderToday(now: number): void {
   todayList.replaceChildren(
     ...entries.map((entry) => {
       const item = document.createElement("li");
+      item.className = "log-entry";
       const time = new Date(entry.completedAt).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
       item.textContent = entry.label === "" ? `${time}, no label` : `${time}, ${entry.label}`;
       return item;
@@ -211,6 +214,7 @@ function onCancel(): void {
   timer = cancel(timer);
   persist();
   announce("Cancelled.");
+  statusRegion.dataset.outcome = "cancelled";
   render();
 }
 
