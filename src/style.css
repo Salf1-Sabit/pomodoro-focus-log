@@ -1,18 +1,28 @@
-/* Colours are tokens so light and dark stay consistent. Text pairs meet WCAG AA (4.5:1),
-   large text and UI parts meet 3:1. */
+/* The one palette. Every colour in the app comes from these tokens; tests/unit/palette.test.ts
+   checks their contrast (text 4.5:1, borders, focus ring and markers 3:1) and that no colour
+   literal appears anywhere else. Change a colour here, then run `npm test`. */
 :root {
+  /* Neutrals: page, cards, body text, secondary text, control and divider lines */
   --bg: #ffffff;
   --surface: #f3f5f8;
   --text: #1a1d21;
   --muted: #4a525c;
   --border: #737b85;
+  /* Action: primary buttons and the text on them */
   --accent: #0b5cad;
   --accent-text: #ffffff;
-  --danger: #a4262c;
+  /* States. Each is paired with a non-colour cue (label, marker, border style) in the rules below. */
+  --focus-state: #0b4f94; /* deep blue, solid border and "●" marker */
+  --break-state: #00695c; /* teal, dashed border and "◐" marker */
+  --completed: #1b6e2f; /* green, "✓" marker and weekly bars */
+  --cancelled: #8a4b00; /* amber-brown, "Cancelled." text */
+  --danger: #a4262c; /* errors and Delete log */
+  /* Keyboard focus ring */
   --focus: #0b5cad;
   color-scheme: light dark;
 }
 
+/* Same tokens, dark values. */
 @media (prefers-color-scheme: dark) {
   :root {
     --bg: #14171b;
@@ -22,6 +32,10 @@
     --border: #7d8691;
     --accent: #7db8ff;
     --accent-text: #0b1220;
+    --focus-state: #8ec1ff;
+    --break-state: #5fd3c0;
+    --completed: #7fd89a;
+    --cancelled: #f0b36a;
     --danger: #ff9a9a;
     --focus: #7db8ff;
   }
