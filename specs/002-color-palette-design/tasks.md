@@ -22,8 +22,8 @@ description: "Task list for the consistent color palette feature"
 
 **Purpose**: Confirm the baseline before changing anything
 
-- [ ] T001 Run `npm test` and `npm run build` at the repository root and record that all existing tests pass (baseline for FR-009)
-- [ ] T002 [P] List every color literal and every `var(--...)` use in `src/style.css`, `index.html` and `src/main.ts`, and note any literal outside the `:root` blocks (research R1 says there should be none)
+- [X] T001 Run `npm test` and `npm run build` at the repository root and record that all existing tests pass (baseline for FR-009)
+- [X] T002 [P] List every color literal and every `var(--...)` use in `src/style.css`, `index.html` and `src/main.ts`, and note any literal outside the `:root` blocks (research R1 says there should be none)
 
 ---
 
@@ -33,11 +33,11 @@ description: "Task list for the consistent color palette feature"
 
 **⚠️ CRITICAL**: No user story work starts until this phase is done
 
-- [ ] T003 Rewrite the palette block at the top of `src/style.css` as the one documented place for colors. Keep the existing tokens (`--bg`, `--surface`, `--text`, `--muted`, `--border`, `--accent`, `--accent-text`, `--danger`, `--focus`) and add `--focus-state`, `--break-state`, `--completed`, `--cancelled` per `data-model.md`. Use one `#rrggbb` value per token, with a comment giving each token's role. Do not change layout, spacing or fonts.
-- [ ] T004 Give the same new tokens values in the existing `@media (prefers-color-scheme: dark)` block in `src/style.css` so dark-mode users keep passing contrast (research R4). Do not add other dark-mode work.
-- [ ] T005 Create `tests/unit/palette.test.ts`: read `src/style.css` with `node:fs`, parse `--token: #rrggbb` from the light and dark blocks, compute WCAG 2.x relative luminance and contrast ratio, and assert the pairs listed in research R5 (4.5:1 for text pairs, 3:1 for border, focus ring, state marker and bar fill pairs) for both blocks. Give each assertion a message naming the pair and the measured ratio.
-- [ ] T006 Add a second test in `tests/unit/palette.test.ts` that fails if a color literal (`#hex`, `rgb(`, `hsl(`) appears in `src/style.css` outside the palette blocks, in `index.html`, or in `src/main.ts` (FR-001, SC-006)
-- [ ] T007 Run `npm test`. Adjust token values in `src/style.css` until T005 and T006 pass in both blocks, and the existing tests still pass
+- [X] T003 Rewrite the palette block at the top of `src/style.css` as the one documented place for colors. Keep the existing tokens (`--bg`, `--surface`, `--text`, `--muted`, `--border`, `--accent`, `--accent-text`, `--danger`, `--focus`) and add `--focus-state`, `--break-state`, `--completed`, `--cancelled` per `data-model.md`. Use one `#rrggbb` value per token, with a comment giving each token's role. Do not change layout, spacing or fonts.
+- [X] T004 Give the same new tokens values in the existing `@media (prefers-color-scheme: dark)` block in `src/style.css` so dark-mode users keep passing contrast (research R4). Do not add other dark-mode work.
+- [X] T005 Create `tests/unit/palette.test.ts`: read `src/style.css` with `node:fs`, parse `--token: #rrggbb` from the light and dark blocks, compute WCAG 2.x relative luminance and contrast ratio, and assert the pairs listed in research R5 (4.5:1 for text pairs, 3:1 for border, focus ring, state marker and bar fill pairs) for both blocks. Give each assertion a message naming the pair and the measured ratio.
+- [X] T006 Add a second test in `tests/unit/palette.test.ts` that fails if a color literal (`#hex`, `rgb(`, `hsl(`) appears in `src/style.css` outside the palette blocks, in `index.html`, or in `src/main.ts` (FR-001, SC-006)
+- [X] T007 Run `npm test`. Adjust token values in `src/style.css` until T005 and T006 pass in both blocks, and the existing tests still pass
 
 **Checkpoint**: Palette defined, guarded by tests, nothing else restyled yet
 
@@ -49,9 +49,9 @@ description: "Task list for the consistent color palette feature"
 
 **Independent Test**: Start a focus session and a break; in grayscale they still look different (quickstart step 2)
 
-- [ ] T008 [US1] In `render()` in `src/main.ts`, set `timerSection.dataset.kind` to `"focus"` when `timer.kind === "focus"` and `"break"` for short and long breaks. Look the section up with the existing `element()` helper for `#timer-section`. This is a presentation hook only; do not change any timer, storage or alert logic.
-- [ ] T009 [US1] In `src/style.css`, add rules keyed on `#timer-section[data-kind="focus"]` and `[data-kind="break"]`: a thick solid left border in `--focus-state` versus a dashed left border in `--break-state`, and a `::before` marker on `.timer-state` ("●" for focus, "◐" for break). The text of the state line stays unchanged.
-- [ ] T010 [US1] Make sure the state line text uses a token color that meets 4.5:1 on `--surface` for both states. Add the focus-state and break-state text pairs to `tests/unit/palette.test.ts` if T005 did not already cover them.
+- [X] T008 [US1] In `render()` in `src/main.ts`, set `timerSection.dataset.kind` to `"focus"` when `timer.kind === "focus"` and `"break"` for short and long breaks. Look the section up with the existing `element()` helper for `#timer-section`. This is a presentation hook only; do not change any timer, storage or alert logic.
+- [X] T009 [US1] In `src/style.css`, add rules keyed on `#timer-section[data-kind="focus"]` and `[data-kind="break"]`: a thick solid left border in `--focus-state` versus a dashed left border in `--break-state`, and a `::before` marker on `.timer-state` ("●" for focus, "◐" for break). The text of the state line stays unchanged.
+- [X] T010 [US1] Make sure the state line text uses a token color that meets 4.5:1 on `--surface` for both states. Add the focus-state and break-state text pairs to `tests/unit/palette.test.ts` if T005 did not already cover them.
 
 **Checkpoint**: US1 works and can be demonstrated on its own
 

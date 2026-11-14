@@ -10,6 +10,7 @@ function element<T extends HTMLElement>(id: string): T {
   return found as T;
 }
 
+const timerSection = element("timer-section");
 const stateText = element("timer-state");
 const display = element("timer-display");
 const cycleText = element("timer-cycle");
@@ -91,6 +92,8 @@ function describeCycle(state: TimerState): string {
 function render(): void {
   const now = Date.now();
   stateText.textContent = describeState(timer);
+  // Styling hook only: CSS uses it to tell focus and break apart by border and marker, not just color.
+  timerSection.dataset.kind = timer.kind === "focus" ? "focus" : "break";
   display.textContent = formatClock(remainingMs(timer, now));
   cycleText.textContent = describeCycle(timer);
   startButton.textContent = `Start ${KIND_NAMES[timer.kind].toLowerCase()}`;

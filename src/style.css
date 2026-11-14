@@ -148,6 +148,37 @@ label {
   font-weight: 600;
 }
 
+/* Focus and break differ by border style and marker as well as color. */
+#timer-section {
+  border-left: 0.5rem solid transparent;
+}
+
+#timer-section[data-kind="focus"] {
+  border-left-style: solid;
+  border-left-color: var(--focus-state);
+}
+
+#timer-section[data-kind="break"] {
+  border-left-style: dashed;
+  border-left-color: var(--break-state);
+}
+
+#timer-section[data-kind="focus"] .timer-state {
+  color: var(--focus-state);
+}
+
+#timer-section[data-kind="break"] .timer-state {
+  color: var(--break-state);
+}
+
+#timer-section[data-kind="focus"] .timer-state::before {
+  content: "\25CF  ";
+}
+
+#timer-section[data-kind="break"] .timer-state::before {
+  content: "\25D0  ";
+}
+
 .timer-display {
   margin: 0.25rem 0;
   font-size: 4rem;

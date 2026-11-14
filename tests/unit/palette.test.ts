@@ -1,9 +1,10 @@
 // Guards the colour palette in src/style.css: contrast of the main pairs, and that
 // no colour is written anywhere except the palette blocks.
-import { readFileSync } from "node:fs";
+// Files are read with Vite's ?raw import so no Node type package is needed.
 import { describe, expect, it } from "vitest";
-
-const css = readFileSync("src/style.css", "utf8");
+import css from "../../src/style.css?raw";
+import html from "../../index.html?raw";
+import mainSource from "../../src/main.ts?raw";
 
 type Palette = Record<string, string>;
 
@@ -90,8 +91,7 @@ describe("palette is the only place colours are written", () => {
   });
 
   it("has no colour literal in index.html or src/main.ts", () => {
-    for (const file of ["index.html", "src/main.ts"]) {
-      expect(readFileSync(file, "utf8").match(literal)?.[0], file).toBeUndefined();
-    }
+    expect(html.match(literal)?.[0], "index.html").toBeUndefined();
+    expect(mainSource.match(literal)?.[0], "src/main.ts").toBeUndefined();
   });
 });
