@@ -1,18 +1,28 @@
-/* Colours are tokens so light and dark stay consistent. Text pairs meet WCAG AA (4.5:1),
-   large text and UI parts meet 3:1. */
+/* The one palette. Every colour in the app comes from these tokens; tests/unit/palette.test.ts
+   checks their contrast (text 4.5:1, borders, focus ring and markers 3:1) and that no colour
+   literal appears anywhere else. Change a colour here, then run `npm test`. */
 :root {
+  /* Neutrals: page, cards, body text, secondary text, control and divider lines */
   --bg: #ffffff;
   --surface: #f3f5f8;
   --text: #1a1d21;
   --muted: #4a525c;
   --border: #737b85;
+  /* Action: primary buttons and the text on them */
   --accent: #0b5cad;
   --accent-text: #ffffff;
-  --danger: #a4262c;
+  /* States. Each is paired with a non-colour cue (label, marker, border style) in the rules below. */
+  --focus-state: #0b4f94; /* deep blue, solid border and "●" marker */
+  --break-state: #00695c; /* teal, dashed border and "◐" marker */
+  --completed: #1b6e2f; /* green, "✓" marker and weekly bars */
+  --cancelled: #8a4b00; /* amber-brown, "Cancelled." text */
+  --danger: #a4262c; /* errors and Delete log */
+  /* Keyboard focus ring */
   --focus: #0b5cad;
   color-scheme: light dark;
 }
 
+/* Same tokens, dark values. */
 @media (prefers-color-scheme: dark) {
   :root {
     --bg: #14171b;
@@ -22,6 +32,10 @@
     --border: #7d8691;
     --accent: #7db8ff;
     --accent-text: #0b1220;
+    --focus-state: #8ec1ff;
+    --break-state: #5fd3c0;
+    --completed: #7fd89a;
+    --cancelled: #f0b36a;
     --danger: #ff9a9a;
     --focus: #7db8ff;
   }
@@ -87,6 +101,11 @@ button.secondary {
   border-color: var(--border);
 }
 
+#cancel-button {
+  color: var(--cancelled);
+  border-color: var(--cancelled);
+}
+
 button.danger {
   background: transparent;
   color: var(--danger);
@@ -134,6 +153,37 @@ label {
   font-weight: 600;
 }
 
+/* Focus and break differ by border style and marker as well as color. */
+#timer-section {
+  border-left: 0.5rem solid transparent;
+}
+
+#timer-section[data-kind="focus"] {
+  border-left-style: solid;
+  border-left-color: var(--focus-state);
+}
+
+#timer-section[data-kind="break"] {
+  border-left-style: dashed;
+  border-left-color: var(--break-state);
+}
+
+#timer-section[data-kind="focus"] .timer-state {
+  color: var(--focus-state);
+}
+
+#timer-section[data-kind="break"] .timer-state {
+  color: var(--break-state);
+}
+
+#timer-section[data-kind="focus"] .timer-state::before {
+  content: "\25CF  ";
+}
+
+#timer-section[data-kind="break"] .timer-state::before {
+  content: "\25D0  ";
+}
+
 .timer-display {
   margin: 0.25rem 0;
   font-size: 4rem;
@@ -165,6 +215,10 @@ label {
   font-weight: 600;
 }
 
+.status[data-outcome="cancelled"] {
+  color: var(--cancelled);
+}
+
 .status:empty,
 .error:empty {
   display: none;
@@ -188,6 +242,18 @@ label {
 .session-list {
   margin: 0;
   padding-left: 1.25rem;
+}
+
+/* Completed sessions: green edge plus a check mark, so the outcome is not colour alone. */
+.log-entry {
+  border-left: 0.25rem solid var(--completed);
+  padding-left: 0.5rem;
+}
+
+.log-entry::before {
+  content: "\2713  ";
+  color: var(--completed);
+  font-weight: 700;
 }
 
 .week-chart {
@@ -217,7 +283,7 @@ label {
 
 .bar {
   width: 100%;
-  background: var(--accent);
+  background: var(--completed);
   border-radius: 0.25rem 0.25rem 0 0;
 }
 
